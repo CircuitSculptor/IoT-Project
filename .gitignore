@@ -1,7 +1,14 @@
 # Ignore node_modules directory
-node_modules/
+Thingspeak/Thingspeak_Combined/ThingSpeak_Combined/
+Thingspeak/Thingspeak_Lux_Sensor/ThingSpeak_Lux/
+Thingspeak/Thingspeak_PIR_Sensor/Thingspeak_PIR_Sensor/
+Thingspeak/Thingspeak_Temp&Humidity/ThingSpeak_Temperature_Humidity/
 
 # Ignore log files
 *.h
+
+# Ignore compiled files
+*.h
+
 
 
