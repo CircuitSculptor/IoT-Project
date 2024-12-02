@@ -1,0 +1,23 @@
+AHT20       
+SCL	-> D22    
+SDA	-> D21    
+              
+Lux
+SCL	-> D22
+SDA	-> D21
+EN	-> D19
+
+DHT11
+SIG	-> D18
+
+Stepper Motor
+IN1	-> D4
+IN2	-> 16
+IN3	-> D17
+IN4	-> D5
+
+Servo	
+SIG	-> D14
+
+Motion Sensor
+SIG	-> D2
