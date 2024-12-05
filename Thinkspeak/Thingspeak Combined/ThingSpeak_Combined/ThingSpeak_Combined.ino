@@ -34,7 +34,7 @@ float temperatureAHT = 0;
 float humidityAHT = 0;
 float temperatureDHT = 0;
 float humidityDHT = 0;
-float luxValue = 0; //
+float luxValue = 0; 
 
 void setup() {
   Serial.begin(115200);  //Initialize serial
