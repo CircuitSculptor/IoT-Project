@@ -1,4 +1,4 @@
-const int pirPin = 19;
+#define pirPin 2
 
 int state = 0;
 int PIR = 0;

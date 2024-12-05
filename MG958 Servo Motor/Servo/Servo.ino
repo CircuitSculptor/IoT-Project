@@ -1,13 +1,3 @@
-/* Sweep
- by BARRAGAN <http://barraganstudio.com>
- This example code is in the public domain.
-
- modified 8 Nov 2013
- by Scott Fitzgerald
- https://www.arduino.cc/en/Tutorial/LibraryExamples/Sweep
-*/
-/*
-
 #include <ESP32Servo.h>
 
 Servo myservo;  // create Servo object to control a servo
@@ -32,33 +22,3 @@ void loop() {
   }
   delay(1000);
 }
-*/
-
-#include <ESP32Servo.h>  
-
-Servo myServo;  
-
-int servoPin = 25; 
-
-void setup() {
-  Serial.begin(115200);  
-  myServo.attach(servoPin);  
-}
-
-void loop() {
-
-  for ()
-
-  if (Serial.available() > 0) {
-    int position = Serial.parseInt();  
-
-    if (position >= 0 && position <= 180) {
-      myServo.write(position); 
-      Serial.print("Servo position set to: ");
-      Serial.println(position);
-    } else {
-      Serial.println("Invalid input. Please enter a value between 0 and 180.");
-    }
-  }
-}
-

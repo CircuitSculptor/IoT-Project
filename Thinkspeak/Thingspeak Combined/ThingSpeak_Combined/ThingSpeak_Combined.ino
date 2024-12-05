@@ -1,9 +1,9 @@
 /*
 Wiring Diagram (Vcc + Gnd)
 AHT20         Lux           DHT11         
-SCL -> D22    SCL -> D22    SIG  -> D19
+SCL -> D22    SCL -> D22    SIG  -> D18
 SDA -> D21    SDA -> D21
-              EN  -> D18
+              EN  -> D19
 */
 
 #include <WiFi.h>
@@ -14,10 +14,10 @@ SDA -> D21    SDA -> D21
 #include "secrets.h"
 #include "ThingSpeak.h" // always include thingspeak header file after other header files and custom macros
 
-#define DHT11PIN 19
+#define DHT11PIN 18
 
 Adafruit_AHTX0 aht;
-DFRobot_B_LUX_V30B myLux(18); 
+DFRobot_B_LUX_V30B myLux(19); 
 DHT dht(DHT11PIN, DHT11);
 
 char ssid[] = SECRET_SSID;   // your network SSID (name) 
@@ -88,13 +88,10 @@ void loop() {
   Serial.print("Temperature: "); Serial.print(temperatureDHT); Serial.println(" degrees C");
   Serial.print("Humidity: "); Serial.print(humidityDHT); Serial.println("% rH\n");
   
-  ///
-  
   myLux.begin();
   float luxValue = myLux.lightStrengthLux(); 
   Serial.print("Lux value: "); Serial.println(luxValue); 
   
-
   // Set the fields with the values
   ThingSpeak.setField(1, temperatureAHT);
   ThingSpeak.setField(2, humidityAHT);
