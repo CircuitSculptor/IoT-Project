@@ -28,7 +28,7 @@ float humidityDHT = 0;
 float luxValue = 0; 
 
 unsigned long previousThingSpeakTime = 0;
-const long thingSpeakInterval = 100000;    // Changed from default 20 second delay as 1 minute is more appropiate for temperature and humidity readings
+const long thingSpeakInterval = 60000;    // Changed from default 20 second delay as 1 minute is more appropiate for temperature and humidity readings
 
 void setup() {
   Serial.begin(115200);
