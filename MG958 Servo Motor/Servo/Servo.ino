@@ -1,24 +1,32 @@
+/*
+ * This ESP32 code is created by esp32io.com
+ *
+ * This ESP32 code is released in the public domain
+ *
+ * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-servo-motor
+ */
+
 #include <ESP32Servo.h>
 
-Servo myservo;  // create Servo object to control a servo
-// twelve Servo objects can be created on most boards
+#define SERVO_PIN 33
 
-int pos = 0;    // variable to store the servo position
+Servo servoMotor;
 
 void setup() {
-  myservo.attach(25);  // attaches the servo on pin 9 to the Servo object
+  servoMotor.attach(SERVO_PIN);  // attaches the servo on ESP32 pin
 }
 
 void loop() {
-  for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+  // rotates from 0 degrees to 180 degrees
+  for (int pos = 0; pos <= 180; pos += 1) {
     // in steps of 1 degree
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    //delay(15);                       // waits 15 ms for the servo to reach the position
+    servoMotor.write(pos);
+    delay(15); // waits 15ms to reach the position
   }
-  delay(1000);
-  for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    //delay(15);                       // waits 15 ms for the servo to reach the position
+
+  // rotates from 180 degrees to 0 degrees
+  for (int pos = 180; pos >= 0; pos -= 1) {
+    servoMotor.write(pos);
+    delay(15); // waits 15ms to reach the position
   }
-  delay(1000);
 }

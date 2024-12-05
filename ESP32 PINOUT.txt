@@ -17,7 +17,7 @@ IN3	-> D17
 IN4	-> D5
 
 Servo	
-SIG	-> D14
+SIG	-> D33
 
 Motion Sensor
 SIG	-> D2
