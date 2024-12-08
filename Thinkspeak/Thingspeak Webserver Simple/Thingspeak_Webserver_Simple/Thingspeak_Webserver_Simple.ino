@@ -7,6 +7,8 @@
 #include "secrets.h"
 
 #define DHT11PIN 18 
+#define BUTTON_PIN1 34
+#define BUTTON_PIN2 35
 
 WiFiClient client;
 WiFiServer server(80);
@@ -27,8 +29,13 @@ float temperatureDHT = 0;
 float humidityDHT = 0;
 float luxValue = 0; 
 
+bool button1ToggleState = false;
+bool button2ToggleState = false;
+bool lastButton1State = LOW;
+bool lastButton2State = LOW;
+
 unsigned long previousThingSpeakTime = 0;
-const long thingSpeakInterval = 60000;    // Changed from default 20 second delay as 1 minute is more appropiate for temperature and humidity readings
+const long thingSpeakInterval = 30000;    // Changed from default 20 second delay
 
 void setup() {
   Serial.begin(115200);
@@ -53,24 +60,54 @@ void setup() {
   }
   dht.begin();
 
+  pinMode(BUTTON_PIN1, INPUT);
+  pinMode(BUTTON_PIN2, INPUT);
+
   // Initialize ThingSpeak
   ThingSpeak.begin(client);
 }
 
 void loop() {
+  handleButton();
   // Handle ThingSpeak updates
   if (millis() - previousThingSpeakTime >= thingSpeakInterval) {
     previousThingSpeakTime = millis();
     sendDataToThingSpeak();
   }
 
-  // Handle web server requests
+  // Webserver
   handleClientRequests();
+}
+
+void handleButton() {   // Reads input from both buttons
+  bool button1State = digitalRead(BUTTON_PIN1);
+  bool button2State = digitalRead(BUTTON_PIN2);
+
+  // Code to toggle the button state to ON or OFF
+  if (button1State == HIGH && lastButton1State == LOW) {
+    delay(50); // Debounce delay
+    if (digitalRead(BUTTON_PIN1) == HIGH) {
+      button1ToggleState = !button1ToggleState; 
+      Serial.print("Button 1 toggled: ");
+      Serial.println(button1ToggleState? "ON" : "OFF");
+    }
+  }
+  lastButton1State = button1State;
+
+  if (button2State == HIGH && lastButton2State == LOW) {
+    delay(50); // Debounce delay
+    if (digitalRead(BUTTON_PIN2) == HIGH) {
+      button2ToggleState = !button2ToggleState; 
+      Serial.print("Button 2 toggled: ");
+      Serial.println(button2ToggleState? "ON" : "OFF");
+    }
+  }
+  lastButton2State = button2State;
 }
 
 void sendDataToThingSpeak() {
 
-  // Get data from sensors
+  // Gather data from AHT20, DHT11 and LUX sensor
   sensors_event_t humidityEvent, tempEvent; 
   bool success = aht.getEvent(&humidityEvent, &tempEvent);
   if (success) {
@@ -101,6 +138,8 @@ void sendDataToThingSpeak() {
   ThingSpeak.setField(3, temperatureDHT);
   ThingSpeak.setField(4, humidityDHT);
   ThingSpeak.setField(5, luxValue);     
+  ThingSpeak.setField(6, button1ToggleState ? 1 : 0);
+  ThingSpeak.setField(7, button2ToggleState ? 1 : 0);
 
   // write to the ThingSpeak channel
   int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
@@ -112,6 +151,7 @@ void sendDataToThingSpeak() {
   }
 }
 
+// Webserver to show data from Thingspeak that makes graphs for data
 void handleClientRequests() {
   WiFiClient client = server.available();
   if (client) {
@@ -134,14 +174,15 @@ void handleClientRequests() {
             client.println("<div style='display: flex; justify-content: space-around;'>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Inside+Temperature+%C2%B0C&type=line&yaxismax=35&yaxismin=15'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Inside+Humidity+rH%25&type=line&yaxismax=105&yaxismin=0'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/6?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Button+1&type=line&yaxis=Status'></iframe>");
             client.println("</div>");
             client.println("<div style='display: flex; justify-content: space-around;'>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&round=2&title=Outside+Temperature+%C2%B0C&type=line&yaxismax=35&yaxismin=15'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&round=0&title=Outside+Humidity+rH%25&type=line&yaxismax=105&yaxismin=0'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/7?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Button+2&type=line&yaxis=Status'></iframe>");
             client.println("</div>");
             client.println("<div style='text-align: center;'>");
-            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src=https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=600'></iframe>");
-            client.println("</div>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=600'></iframe>");
             client.println("</body>");
             client.println("</html>");
             break;

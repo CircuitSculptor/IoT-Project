@@ -12,7 +12,7 @@ SIG	-> D18
 
 Stepper Motor
 IN1	-> D4
-IN2	-> 16
+IN2	-> D16
 IN3	-> D17
 IN4	-> D5
 
@@ -21,3 +21,12 @@ SIG	-> D33
 
 Motion Sensor
 SIG	-> D2
+
+Buttons
+1	-> D34
+2	-> D35
+
+LED	-> D32
+
+
+
