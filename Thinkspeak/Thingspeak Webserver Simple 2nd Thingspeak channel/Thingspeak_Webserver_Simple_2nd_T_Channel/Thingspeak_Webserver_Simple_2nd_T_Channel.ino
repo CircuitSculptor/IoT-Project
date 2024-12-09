@@ -140,6 +140,10 @@ void sendDataToThingSpeak() {
   myLux.begin();
   float luxValue = myLux.lightStrengthLux(); 
   Serial.print("Lux value: "); Serial.println(luxValue); 
+
+ // Random value 0 or 1 generator for demo
+  int LED = esp_random() % 2;
+  Serial.print("LED Status: "); Serial.println(LED); 
   
   // Set the fields with the values
   ThingSpeak.setField(1, temperatureAHT);
@@ -149,6 +153,7 @@ void sendDataToThingSpeak() {
   ThingSpeak.setField(5, luxValue);     
   ThingSpeak.setField(6, button1ToggleState ? 1 : 0);
   ThingSpeak.setField(7, button2ToggleState ? 1 : 0);
+  ThingSpeak.setField(8, LED);
 
   // write to the ThingSpeak channel
   int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
@@ -161,12 +166,19 @@ void sendDataToThingSpeak() {
 
   // Second ThingSpeak Channel
 
-  // Random value 0 or 1 generator for demo
-  int LED = esp_random() % 2;
+  // Random value 0 or 1 generators for demo
+  int Vent = esp_random() % 2;
+  Serial.print("Vent Status: "); Serial.println(Vent);
 
-  Serial.print("LED Status: "); Serial.println(LED); 
+  int Motion = esp_random() % 2;
+  Serial.print("Motion Status: "); Serial.println(Motion);
 
-  ThingSpeak.setField(1, LED);
+  int Blinds = esp_random() % 2;
+  Serial.print("Blinds Status: "); Serial.println(Blinds);
+
+  ThingSpeak.setField(1, Vent);
+  ThingSpeak.setField(2, Motion);
+  ThingSpeak.setField(3, Blinds);
 
   // write to the ThingSpeak channel
   int y = ThingSpeak.writeFields(myChannelNumber2, myWriteAPIKey2);
@@ -211,7 +223,12 @@ void handleClientRequests() {
             client.println("<div style='display: flex; justify-content: space-around;'>");
             //client.println("<div style='text-align: center;'>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=600'></iframe>");
-            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=LED+Status&type=line'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=LED+Status++1+%3D+ON%2C+0+%3D+OFF&type=line'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Vent+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line'></iframe>");
+            client.println("</div>");
+            client.println("<div style='display: flex; justify-content: space-around;'>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Motion+Status++0+%3D+No+Movement%2C+1+%3D+Movement&type=line'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Blinds+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line'></iframe>");
             client.println("</body>");
             client.println("</html>");
             break;
@@ -227,3 +244,4 @@ void handleClientRequests() {
     Serial.println("Client Disconnected.");
   }
 }
+ 
