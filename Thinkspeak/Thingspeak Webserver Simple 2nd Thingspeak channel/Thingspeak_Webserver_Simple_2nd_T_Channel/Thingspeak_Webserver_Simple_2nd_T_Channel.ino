@@ -40,8 +40,14 @@ bool lastButton2State = LOW;
 unsigned long previousThingSpeakTime = 0;
 const long thingSpeakInterval = 20000;    // Changed from default 20 second delay
 
+//IPAddress local_IP(192, 168, 137, 200);
+
 void setup() {
   Serial.begin(115200);
+
+  //if (!WiFi.config(local_IP)) {
+  //  Serial.println("Failed to configure static IP");
+  //}
 
   // Connect to WiFi
   WiFi.begin(ssid, pass);
