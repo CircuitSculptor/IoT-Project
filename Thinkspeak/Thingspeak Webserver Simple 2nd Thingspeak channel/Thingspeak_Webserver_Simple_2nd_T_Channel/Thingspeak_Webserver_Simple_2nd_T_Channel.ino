@@ -7,6 +7,7 @@
 #include "secrets.h"
 
 #define DHT11PIN 18 
+#define LEDPIN 32
 #define BUTTON_PIN1 34
 #define BUTTON_PIN2 35
 
@@ -26,8 +27,6 @@ Adafruit_AHTX0 aht;
 DFRobot_B_LUX_V30B myLux(19);     
 DHT dht(DHT11PIN, DHT11);         
 
-float temperatureAHT = 0;
-float humidityAHT = 0;
 float temperatureDHT = 0;
 float humidityDHT = 0;
 float luxValue = 0; 
@@ -63,14 +62,11 @@ void setup() {
   server.begin();
 
   // Initialize sensors
-  if (!aht.begin()) {
-    Serial.println("Could not find AHT sensor.");
-    while (1) delay(10);
-  }
   dht.begin();
 
   pinMode(BUTTON_PIN1, INPUT);
   pinMode(BUTTON_PIN2, INPUT);
+  pinMode(LEDPIN, OUTPUT);
 
   // Initialize ThingSpeak
   ThingSpeak.begin(client);
@@ -117,19 +113,25 @@ void handleButton() {   // Reads input from both buttons
 void sendDataToThingSpeak() {
 
   // Gather data from AHT20, DHT11 and LUX sensor
-  sensors_event_t humidityEvent, tempEvent; 
-  bool success = aht.getEvent(&humidityEvent, &tempEvent);
-  if (success) {
-    temperatureAHT = tempEvent.temperature;
-    humidityAHT = humidityEvent.relative_humidity;
-  } else {
-  Serial.println("AHT sensor read failed!");
+  if (!aht.begin()) {
+    Serial.println("Could not find AHT sensor.");
+    while (1) delay(10);
   }
+  sensors_event_t humidityEvent, tempEvent; 
+  resetAHT20();
+  aht.getEvent(&humidityEvent, &tempEvent);
+  float temperatureAHT = 0;
+  float humidityAHT = 0;
+  temperatureAHT = tempEvent.temperature;
+  humidityAHT = humidityEvent.relative_humidity;
 
+  Serial.println("********************************************");
   Serial.println("Inside Sensor");
   Serial.print("Temperature: "); Serial.print(temperatureAHT); Serial.println(" degrees C");
   Serial.print("Humidity: "); Serial.print(humidityAHT); Serial.println("% rH\n");
-  
+  //Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees C");
+  //Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH\n");
+
   //dht.begin();
   float temperatureDHT = dht.readTemperature();
   float humidityDHT = dht.readHumidity(); 
@@ -144,10 +146,13 @@ void sendDataToThingSpeak() {
  // Random value 0 or 1 generator for demo
   int LED = esp_random() % 2;
   Serial.print("LED Status: "); Serial.println(LED); 
+  digitalWrite(LEDPIN, LED);
   
   // Set the fields with the values
   ThingSpeak.setField(1, temperatureAHT);
   ThingSpeak.setField(2, humidityAHT);
+  //hingSpeak.setField(1, temp.temperature);
+  //ThingSpeak.setField(2, humidity.relative_humidity);
   ThingSpeak.setField(3, temperatureDHT);
   ThingSpeak.setField(4, humidityDHT);
   ThingSpeak.setField(5, luxValue);     
@@ -222,7 +227,7 @@ void handleClientRequests() {
             client.println("</div>");
             client.println("<div style='display: flex; justify-content: space-around;'>");
             //client.println("<div style='text-align: center;'>");
-            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=600'></iframe>");
+            client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=1000&yaxismin=0'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=LED+Status++1+%3D+ON%2C+0+%3D+OFF&type=line'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Vent+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line'></iframe>");
             client.println("</div>");
@@ -244,4 +249,38 @@ void handleClientRequests() {
     Serial.println("Client Disconnected.");
   }
 }
- 
+
+void resetAHT20() {
+  Wire.beginTransmission(0x38);
+  Wire.write(0xBA);
+  Wire.endTransmission();
+  delay(20);
+}
+
+/*
+  bool success = aht.getEvent(&humidityEvent, &tempEvent);
+  if (success) {
+    temperatureAHT = tempEvent.temperature;
+    humidityAHT = humidityEvent.relative_humidity;
+  } else {
+  Serial.println("AHT sensor read failed!");
+  }
+
+  float temperatureAHT = 0;
+  float humidityAHT = 0;
+  
+  if (aht.getEvent(&humidityEvent, &tempEvent)) {
+    temperatureAHT = tempEvent.temperature;
+    humidityAHT = humidityEvent.relative_humidity;
+    Serial.println("AHT sensor read successful!");
+  } else {
+    Serial.println("AHT sensor read failed!");
+    temperatureAHT = NAN;  // Use NAN to signal invalid readings
+    humidityAHT = NAN;
+  }
+
+  aht.getEvent(&humidityEvent, &tempEvent);
+  delay(10);
+  temperatureAHT = tempEvent.temperature;
+  humidityAHT = humidityEvent.relative_humidity;
+*/
