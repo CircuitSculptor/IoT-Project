@@ -19,9 +19,9 @@ My project is all about controlling everything that may be found in a bedroom.
 - In my Smart Bedroom where will be **2 temperature and humidity sensors**, one will be placed inside the bedroom where it can measure the entire room effectively and one will be outside. To          protect the sensor from rain or direct sunlight, it is common practise to use a box with vent holes called a **Stevenson Screen**.
   
   - My project features 2 types of sensors to gather temperature and humidity data.
-      - One is a AHT20 sensor that uses the **I²C** protocol. More on I²C [here](#i2c)
+      - One sensor is a AHT20 that uses the **I²C** protocol. More on I²C [here](#i2c)
       attach image
-      - One is a DHT11 sensor that is less advanced so uses a 1-wire comminication standard but is easier to get running. 
+      - One  sensor is a DHT11 that is less advanced so uses a 1-wire comminication standard but is easier to get running. 
         attach image
     - Both sensors have libraries that help in interfacing them to the ESP32.
 
