@@ -16,12 +16,13 @@ My project is all about controlling everything that may be found in a bedroom.
 - 1x LED (with 330Ω resistor)
 
 ### Features
-- In my Smart Bedroom where will be **2 temperature and humidity sensors**, one will be placed inside the bedroom where it can measure the entire room effectively and one will be outside. To protect the sensor from rain or direct sunlight, it is common practise to use a box with vent holes called a **Stevenson Screen**.
+- In my Smart Bedroom where will be **2 temperature and humidity sensors**, one will be placed inside the bedroom where it can measure the entire      room effectively and one will be outside. To protect the sensor from rain or direct sunlight, it is common practise to use a box with vent holes 
+  called a **Stevenson Screen**.
   
   - My project features 2 types of sensors to gather temperature and humidity data.
-      - One is a AHT20 sensor that uses the **I²C** protocol. More on I²C [here]()
+      - One is a AHT20 sensor that uses the **I²C** protocol. More on I²C [here](I²C)
       attach image
-      - One is a DHT11 sensor that is less advanced so uses a 1-wire comminication              standard but is easier to get running. 
+      - One is a DHT11 sensor that is less advanced so uses a 1-wire comminication standard but is easier to get running. 
         attach image
     - Both sensors have libraries that help in interfacing them to the ESP32. Please see the [Library List]() on all the required libraries to install.
   
@@ -45,7 +46,7 @@ My project is all about controlling everything that may be found in a bedroom.
 
 ### I²C
 - The i2c protocol is fascinating as you only need power and 2 data wires to communicate with sensors and you can daisy-chain multiple sensors on the same bus as long as you dont use 2 identical sensors, if a sensor has multiple i2c addresses then some changes to the code and the sensors will work with eachother.  
--  the data is sent of **SDA (Serial Data)** and **SCL (Serial Clock)**.
+-  The data is sent usign **SDA (Serial Data)** and **SCL (Serial Clock)**.
 
 **More to come in the future**
 
