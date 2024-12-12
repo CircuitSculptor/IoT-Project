@@ -1,6 +1,9 @@
-Smart Bedroom IoT Project
+# Smart Bedroom IoT Project
 
-Components:
+## Description
+My project is all about controlling everything that may be found in a bedroom. 
+
+### Components for Project
 - 1x ESP32 development board
 - 1x AHT20 Temperature and Humidity Sensor
 - 1x DHT11 Temperature and Humidity Sensor
@@ -12,7 +15,7 @@ Components:
 - 2x Momentary Push Button (with 10kΩ pull-up resistor)
 - 1x LED (with 330Ω resistor)
 
-Features:
+### Features
 - Gather Temperature and Humidity from a Inside and Outside sensor
   One sensor is the AHT20 and the second one is the DHT11.
   - The AHT20 uses the I²C protocol to communicate with the ESP32. More on I²C here (attach link to information further down)
