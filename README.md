@@ -16,11 +16,14 @@ My project is all about controlling everything that may be found in a bedroom.
 - 1x LED (with 330Ω resistor)
 
 ### Features
-- Gather Temperature and Humidity from a Inside and Outside sensor
-  One sensor is the AHT20 and the second one is the DHT11.
-  - The AHT20 uses the I²C protocol to communicate with the ESP32. More on I²C here (attach link to information further down)
-  - The DHT11 uses a 1 wire data protocol that is less advanced than the AHT20.
-  (attach image here)
+- In my Smart Bedroom where will be **2 temperature and humidity sensors**, one will be placed inside the bedroom where it can measure the entire room effectively and one will be outside. To protect the sensor from rain or direct sunlight, it is common practise to use a box with vent holes called a **Stevenson Screen**.
+  
+  - My project features 2 types of sensors to gather temperature and humidity data.
+      - One is a AHT20 sensor that uses the **I²C** protocol. More on I²C [here]()
+      attach image
+      - One is a DHT11 sensor that is less advanced so uses a 1-wire comminication              standard but is easier to get running. 
+        attach image
+    - Both sensors have libraries that help in interfacing them to the ESP32. Please see the [Library List]() on all the required libraries to install.
   
 - Gather Light Intensity from a dedicated sensor
   It is the DFRobot_B_LUX_V30B sensor.
@@ -37,6 +40,12 @@ My project is all about controlling everything that may be found in a bedroom.
 - Using the 2 buttons I plan to have a physical way of moving the blinds up and down besides the webserver's digital buttons
   Each button has a 10kΩ pull-up resistor. It is their to ensure that the ESP32 has a defined starting point for the state of the button.
   (attach image here)
+
+## Library List
+
+### I²C
+- The i2c protocol is fascinating as you only need power and 2 data wires to communicate with sensors and you can daisy-chain multiple sensors on the same bus as long as you dont use 2 identical sensors, if a sensor has multiple i2c addresses then some changes to the code and the sensors will work with eachother.  
+-  the data is sent of **SDA (Serial Data)** and **SCL (Serial Clock)**.
 
 **More to come in the future**
 
