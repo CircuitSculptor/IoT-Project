@@ -1,9 +1,9 @@
 #include <WiFi.h>
-#include <ThingSpeak.h>
 #include <Wire.h>
 #include <DFRobot_B_LUX_V30B.h>
 #include <Adafruit_AHTX0.h>
 #include "DHT.h"
+#include <ThingSpeak.h>
 #include "secrets.h"
 
 #define DHT11PIN 18 
@@ -39,14 +39,18 @@ bool lastButton2State = LOW;
 unsigned long previousThingSpeakTime = 0;
 const long thingSpeakInterval = 20000;    // Changed from default 20 second delay
 
-//IPAddress local_IP(192, 168, 137, 200);
+IPAddress local_IP(192, 168, 137, 200);
+IPAddress gateway(192, 168, 137, 1);
+IPAddress subnet(255, 255, 255 ,0);
+IPAddress primaryDNS(8, 8, 8, 8);
+IPAddress secondaryDNS(8, 8, 4, 4);
 
 void setup() {
   Serial.begin(115200);
 
-  //if (!WiFi.config(local_IP)) {
-  //  Serial.println("Failed to configure static IP");
-  //}
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("Failed to configure static IP");
+  }
 
   // Connect to WiFi
   WiFi.begin(ssid, pass);
@@ -226,7 +230,6 @@ void handleClientRequests() {
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/7?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Button+2&type=line&yaxis=Status'></iframe>");
             client.println("</div>");
             client.println("<div style='display: flex; justify-content: space-around;'>");
-            //client.println("<div style='text-align: center;'>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=1000&yaxismin=0'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2712996/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=LED+Status++1+%3D+ON%2C+0+%3D+OFF&type=line'></iframe>");
             client.println("<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/2779266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Vent+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line'></iframe>");
@@ -256,31 +259,3 @@ void resetAHT20() {
   Wire.endTransmission();
   delay(20);
 }
-
-/*
-  bool success = aht.getEvent(&humidityEvent, &tempEvent);
-  if (success) {
-    temperatureAHT = tempEvent.temperature;
-    humidityAHT = humidityEvent.relative_humidity;
-  } else {
-  Serial.println("AHT sensor read failed!");
-  }
-
-  float temperatureAHT = 0;
-  float humidityAHT = 0;
-  
-  if (aht.getEvent(&humidityEvent, &tempEvent)) {
-    temperatureAHT = tempEvent.temperature;
-    humidityAHT = humidityEvent.relative_humidity;
-    Serial.println("AHT sensor read successful!");
-  } else {
-    Serial.println("AHT sensor read failed!");
-    temperatureAHT = NAN;  // Use NAN to signal invalid readings
-    humidityAHT = NAN;
-  }
-
-  aht.getEvent(&humidityEvent, &tempEvent);
-  delay(10);
-  temperatureAHT = tempEvent.temperature;
-  humidityAHT = humidityEvent.relative_humidity;
-*/
