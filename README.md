@@ -27,7 +27,7 @@ My project is all about controlling everything that may be found in a bedroom.
 
 
   - In my project I wanted to determine if its getting dark outside or if its the morning. Later on in the project I will use this data to drive a stepper motor that will open and close roller blinds that I have in my bedroom.
-      - The sensor I will be using is the DFRObot_B_LUX_V30B light intensity sensor. It also uses the **I²C** protocol. This is the beauty of **I²C**, the ESP32 only needs 2 wires to connect 2 sensors and I can add more **I²C** sensors to my project, give them power and connect them to the **I²C** bus. More on I²C [here](#i2c)
+      - The sensor I will be using is the DFRobot_B_LUX_V30B light intensity sensor. It also uses the **I²C** protocol. This is the beauty of **I²C**, the ESP32 only needs 2 wires to connect 2 sensors and I can add more **I²C** sensors to my project, give them power and connect them to the **I²C** bus. More on I²C [here](#i2c)
         
       - The light value that it collects is called Lux. The sensor can can measure from 0-200k Lux, my phones flashlight gets to above 100k Lux, which is impressive. I have not yet tested the sensor at night so cannot say what will be the lowest value I will accept as being dark outside. I will be doing some tests and simulations in the future.
       - When I will find the range of Lux values that I can work with, I plan to use this sensor to automatically close the blinds when the sun sets and their is no point of having them open. Annd the same for the morning, the sensor will start to read that the Lux value is slowly climbing, I will use the data with a delay to open the blinds and wake you up
