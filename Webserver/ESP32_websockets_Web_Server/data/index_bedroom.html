@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Bedroom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="topnav">
+        <a href="index.html"><img src="Home.png"></a>
+        <a href='https://www.github.com/CircuitSculptor/IoT-Project' target='_blank'><img src="Github.webp"></a>
+        <a href="index_bedroom.html"><img src="Bedroom3.png"></a>
+        <a href="index_kitchen.html"><img src="Kitchen.png"></a>
+        <a href="index_living_room.html"><img src="LR2.png"></a>
+    </div>
+
+    <h1>BEDROOM</h1>
+
+    <div class="main">
+        <div class="TextTop">
+            <p>Indoor Temperature</p>
+            <iframe class="Thingspeak_Guage" src="https://thingspeak.com/channels/2712996/widgets/1022274"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Indoor Humidity</p>
+            <iframe class="Thingspeak_Guage" src="https://thingspeak.com/channels/2712996/widgets/1022275"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Outdoor Temperature</p>
+            <iframe class="Thingspeak_Guage" src="https://thingspeak.com/channels/2712996/widgets/1022276"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Outdoor Humidity</p>
+            <iframe class="Thingspeak_Guage" src="https://thingspeak.com/channels/2712996/widgets/1022277"></iframe>
+        </div>
+    </div>
+    <div class="main">
+        <div class="TextTop">
+            <p>Button 1 Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2712996/widgets/1022290"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Button 2 Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2712996/widgets/1022291"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>LED Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2712996/widgets/1022292"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Motion Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2779266/widgets/1022273"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Vent Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2779266/widgets/1021169"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Blinds Status</p>
+            <iframe class="Thingspeak_Lamp" src="https://thingspeak.com/channels/2779266/widgets/1021168"></iframe>
+        </div>
+        <div class="TextTop">
+            <p>Light Intensity</p>
+            <iframe class="Thingspeak_Numeric" src="https://thingspeak.com/channels/2712996/widgets/1022288"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

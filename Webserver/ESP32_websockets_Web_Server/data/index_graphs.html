@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Bedroom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="topnav">
+        <a href="index.html"><img src="Home.png"></a>
+        <a href='https://www.github.com/CircuitSculptor/IoT-Project' target='_blank'><img src="Github.webp"></a>
+        <a href="index_bedroom.html"><img src="Bedroom3.png"></a>
+        <a href="index_kitchen.html"><img src="Kitchen.png"></a>
+        <a href="index_living_room.html"><img src="LR2.png"></a>
+    </div>
+
+    <div class="top">
+        <h1>Thingspeak Dashboard</h1>
+    </div>
+    <div class="main">
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Inside+Temperature+%C2%B0C&type=line&yaxismax=35&yaxismin=15"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Inside+Humidity+rH%25&type=line&yaxismax=105&yaxismin=0"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/6?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Button+1&type=line&yaxis=Status"></iframe>
+    </div>
+    <br>
+    <div class="main">
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&round=2&title=Outside+Temperature+%C2%B0C&type=line&yaxismax=35&yaxismin=15"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&round=0&title=Outside+Humidity+rH%25&type=line&yaxismax=105&yaxismin=0"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/7?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Button+2&type=line&yaxis=Status"></iframe>
+    </div>
+    <br>
+    <div class="main">
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Lux+Meter&type=line&yaxismax=1000&yaxismin=0"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2712996/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=LED+Status++1+%3D+ON%2C+0+%3D+OFF&type=line"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2779266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Vent+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line"></iframe>
+    </div>
+    <br>
+    <div class="main">
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2779266/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Motion+Status++0+%3D+No+Movement%2C+1+%3D+Movement&type=line"></iframe>
+        <iframe class="Thingspeak" src="https://thingspeak.com/channels/2779266/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Blinds+Status++0+%3D+CLOSED%2C+1+%3D+OPEN&type=line"></iframe>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
