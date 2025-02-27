@@ -39,7 +39,7 @@ html {
     justify-content: space-around; 
   }
   .Box {
-    border: 5px dotted red;
+    border: 5px solid red;
     padding: 20px;
   }
   .Thingspeak {
