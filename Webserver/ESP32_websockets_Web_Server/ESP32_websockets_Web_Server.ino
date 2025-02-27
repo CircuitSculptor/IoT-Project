@@ -13,8 +13,8 @@
 #include <secrets.h>
 
 // Replace with your network credentials
-const char* ssid = "SECRET_SSID";
-const char* password = "SECRET_PASS";
+char ssid[] = SECRET_SSID; 
+char pass[] = SECRET_PASS;
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -37,7 +37,7 @@ void initFS() {
 // Initialize WiFi
 void initWiFi() {
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, pass);
   Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print('.');
@@ -55,7 +55,7 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
       Serial.printf("WebSocket client #%u disconnected\n", client->id());
       break;
     case WS_EVT_DATA:
-      handleWebSocketMessage(arg, data, len);
+      //handleWebSocketMessage(arg, data, len);
       break;
     case WS_EVT_PONG:
     case WS_EVT_ERROR:
@@ -76,7 +76,7 @@ void setup() {
   
   // Web Server Root URL
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/index.html", "text/html");
+    request->send(LittleFS, "data/index.html", "text/html");
   });
   
   server.serveStatic("/", LittleFS, "/");
