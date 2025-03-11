@@ -40,18 +40,20 @@ bool lastButton2State = LOW;
 unsigned long previousThingSpeakTime = 0;
 const long thingSpeakInterval = 20000;    // Changed from default 20 second delay
 
+/*
 IPAddress local_IP(192, 168, 137, 200);
 IPAddress gateway(192, 168, 137, 1);
 IPAddress subnet(255, 255, 255 ,0);
 IPAddress primaryDNS(8, 8, 8, 8);
 IPAddress secondaryDNS(8, 8, 4, 4);
+*/
 
 void setup() {
   Serial.begin(115200);
 
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
-    Serial.println("Failed to configure static IP");
-  }
+  //if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+   // Serial.println("Failed to configure static IP");
+  //}
 
   // Connect to WiFi
   WiFi.begin(ssid, pass);

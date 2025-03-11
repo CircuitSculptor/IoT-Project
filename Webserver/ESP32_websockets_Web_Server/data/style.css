@@ -5,6 +5,7 @@ html {
     background-color: aqua;
   }
   .topnav {
+    border: 5px solid black;
     padding: 10px;
     background-color: antiquewhite;
     display: flex;
@@ -26,7 +27,6 @@ html {
     width: 350px;
     height: 250px;
     border: 1px solid #cccccc;
-
   }
   .Thingspeak_Numeric {
     width: 200px;
@@ -38,6 +38,10 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: space-around; 
+  }
+  .Box {
+    border: 5px solid red;
+    padding: 20px;
   }
   .Thingspeak {
     width: 430px;
