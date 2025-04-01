@@ -8,14 +8,16 @@
 </head>
 <body>
     <div class="topnav">
-        <a href="index.html"><img src="Home.png"></a>
-        <a href='https://www.github.com/CircuitSculptor/IoT-Project' target='_blank'><img src="Github.webp"></a>
-        <a href="index_bedroom.html"><img src="Bedroom3.png"></a>
-        <a href="index_kitchen.html"><img src="Kitchen.png"></a>
-        <a href="index_living_room.html"><img src="LR2.png"></a>
+        <h1>SMART BEDROOM</h1>
+        <a href='https://www.github.com/CircuitSculptor/IoT-Project' target='_blank'><h1>LINK TO MY GITHUB</h1></a>
     </div>
-
-    <h1>BEDROOM</h1>
+    <!--      
+    <a href='https://www.github.com/CircuitSculptor/IoT-Project' target='_blank'><img src="Github.webp"></a>  
+    <a href="index_bedroom.html"><img src="Bedroom3.png"></a>
+    <a href="index_kitchen.html"><img src="Kitchen.png"></a>
+    <a href="index_living_room.html"><img src="LR2.png"></a>
+    -->
+    <br>
 
     <div class="main">
         <div class="Box">
@@ -50,9 +52,31 @@
         </div>
         <div class="Box">
             <div class="TextTop">
-                <p>Light Intensity</p>
+                <p>Light Intensity (LUX)</p>
                 <iframe class="Thingspeak_Numeric" src="https://thingspeak.com/channels/2712996/widgets/1022288"></iframe>
             </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <p>Enter Indoor Temperature Threshold</p>
+            <div class="TextTop">
+                <label for="highT">Enter High Threshold</label>
+                <input type="number" id="highT" name="highT" min="30" max="50">
+            </div>
+            <br>
+            <div class="TextTop">
+                <label for="lowT">Enter Low Threshold</label>
+                <input type="number" id="lowT" name="highT" min="0" max="30">
+            </div>
+            <br>
+
+            <br>
+            <button type="button">Blinds Up</button>
+            <br>
+            <br>
+            <button type="button">Blinds Down</button>
         </div>
         <div class="Box">
             <div class="TextTop">
@@ -76,6 +100,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="scriptIOT.js"></script>
 </body>
 </html>
