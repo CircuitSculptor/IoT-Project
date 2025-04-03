@@ -6,17 +6,26 @@
 #include "DHT.h"
 #include <WebServer.h>
 #include <ESPmDNS.h>
+#include <Stepper.h>
 #include <ThingSpeak.h>
 #include "homepage.h"
 #include "secrets.h"
+
+const int stepsPerRevolution = 2048; // Number of steps per revolution
 
 #define DHT11PIN 18 
 #define LEDPIN 32
 #define BUTTON_PIN1 34
 #define BUTTON_PIN2 35
+#define IN1 4
+#define IN2 16
+#define IN3 17
+#define IN4 5
 
 WiFiClient client;
 WebServer server(80);
+// Initialize the stepper library
+Stepper myStepper(stepsPerRevolution, IN1, IN3, IN2, IN4);
 
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
@@ -35,10 +44,16 @@ float temperatureDHT = 0;
 float humidityDHT = 0;
 float luxValue = 0; 
 
+// Specify the desired number of revolutions
+float desiredRevolutions = 10;
+
 bool button1ToggleState = false;
 bool button2ToggleState = false;
 bool lastButton1State = LOW;
 bool lastButton2State = LOW;
+
+bool BlindsUpReady = false;
+bool BlindsDownReady = false;
 
 unsigned long previousThingSpeakTime = 0;
 const long thingSpeakInterval = 20000;    // Changed from default 20 second delay
@@ -108,6 +123,33 @@ void loop(void) {
   delay(2);//allow the cpu to switch to other tasks
 
   handleButton();
+
+  if (BlindsUpReady == true) {
+    BlindsDownReady = false;
+    // Set the speed at 10 RPM
+    myStepper.setSpeed(10);
+
+    // Calculate the total number of steps
+    int totalSteps = desiredRevolutions * stepsPerRevolution;
+
+    // Move the stepper motor the desired number of steps
+    myStepper.step(totalSteps);
+    BlindsUpReady = false;
+  }
+
+  if (BlindsDownReady == true) {
+    BlindsUpReady = false;
+    // Set the speed at 10 RPM
+    myStepper.setSpeed(10);
+
+    // Calculate the total number of steps
+    int totalSteps = desiredRevolutions * stepsPerRevolution;
+
+    // Move the stepper motor the desired number of steps
+    myStepper.step(-totalSteps);
+    BlindsUpReady = false;
+  }
+
   // Handle ThingSpeak updates
   if (millis() - previousThingSpeakTime >= thingSpeakInterval) {
     previousThingSpeakTime = millis();
@@ -160,10 +202,7 @@ void sendDataToThingSpeak() {
   Serial.println("Inside Sensor");
   Serial.print("Temperature: "); Serial.print(temperatureAHT); Serial.println(" degrees C");
   Serial.print("Humidity: "); Serial.print(humidityAHT); Serial.println("% rH\n");
-  //Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees C");
-  //Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH\n");
 
-  //dht.begin();
   float temperatureDHT = dht.readTemperature();
   float humidityDHT = dht.readHumidity(); 
   Serial.println("Outside Sensor");
@@ -209,9 +248,17 @@ void sendDataToThingSpeak() {
   int Motion = esp_random() % 2;
   Serial.print("Motion Status: "); Serial.println(Motion);
 
-  int Blinds = esp_random() % 2;
-  Serial.print("Blinds Status: "); Serial.println(Blinds);
 
+  int Blinds = esp_random() % 2;
+  
+  Serial.print("Blinds Status: "); Serial.println(Blinds);
+  if (Blinds == 0) {
+    BlindsDownReady = true;
+  }
+  if (Blinds == 1) {
+      BlindsUpReady = true;
+  }
+  
   ThingSpeak.setField(1, Vent);
   ThingSpeak.setField(2, Motion);
   ThingSpeak.setField(3, Blinds);
