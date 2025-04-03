@@ -12,23 +12,32 @@ const int stepsPerRevolution = 2048; // Number of steps per revolution
 Stepper myStepper(stepsPerRevolution, IN1, IN3, IN2, IN4);
 
 // Specify the desired number of revolutions
-float desiredRevolutions = 2;
+float desiredRevolutions = 1;
 
 void setup() {
-  // Set the speed at 10 RPM
-  myStepper.setSpeed(10);
-  // Initialize the serial port
-  Serial.begin(115200);
+    // Initialize the serial port
+    Serial.begin(115200);
 
-  // Calculate the total number of steps
-  int totalSteps = desiredRevolutions * stepsPerRevolution;
+    BlindsMovement();
 
-  // Move the stepper motor the desired number of steps
-  Serial.println("Moving stepper motor...");
-  myStepper.step(totalSteps);
-  Serial.println("Motion complete.");
+}
+
+void BlindsMovement() {
+      
+      // Set the speed at 10 RPM
+      myStepper.setSpeed(10);
+
+      // Calculate the total number of steps
+      int totalSteps = desiredRevolutions * stepsPerRevolution;
+
+      // Move the stepper motor the desired number of steps
+      Serial.println("Moving stepper motor...");
+      myStepper.step(totalSteps);
+      Serial.println("Motion complete.");
 }
 
 void loop() {
   // Nothing to do here since motion is complete in `setup`
 }
+
+
