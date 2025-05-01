@@ -1,13 +1,12 @@
 #include <DHT.h>
 //#include "DHT.h"
-#define DHT11PIN 19
+#define DHT11PIN 18
 
 DHT dht(DHT11PIN, DHT11);
+
 void setup()
 {
-  
   Serial.begin(115200);
-/* Start the DHT11 Sensor */
   dht.begin();
 }
 

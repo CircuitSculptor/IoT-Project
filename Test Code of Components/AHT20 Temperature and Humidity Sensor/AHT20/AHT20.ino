@@ -5,11 +5,11 @@ Adafruit_AHTX0 aht;
 void setup() {
   Serial.begin(115200);
   Serial.println("Adafruit AHT10/AHT20 demo!");
-
   if (! aht.begin()) {
     Serial.println("Could not find AHT? Check wiring");
     while (1) delay(10);
   }
+  resetAHT20();
   Serial.println("AHT10 or AHT20 found");
 }
 
@@ -21,3 +21,11 @@ void loop() {
 
   delay(500);
 }
+
+void resetAHT20() {
+  Wire.beginTransmission(0x38);
+  Wire.write(0xBA);
+  Wire.endTransmission();
+  delay(20);
+}
+
