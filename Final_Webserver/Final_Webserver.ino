@@ -7,6 +7,7 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Stepper.h>
+//#include <ESP32Servo.h>
 #include <ThingSpeak.h>
 #include "homepage.h"
 #include "secrets.h"
@@ -21,11 +22,14 @@ const int stepsPerRevolution = 2048; // Number of steps per revolution
 #define IN2 16
 #define IN3 17
 #define IN4 5
+#define PIRPIN 2
+//#define SERVOPIN 33
 
 WiFiClient client;
 WebServer server(80);
 // Initialize the stepper library
 Stepper myStepper(stepsPerRevolution, IN1, IN3, IN2, IN4);
+//Servo myServo;  // Create a Servo object
 
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
@@ -38,7 +42,7 @@ const char * myWriteAPIKey2 = SECRET_WRITE_APIKEY2;
 
 Adafruit_AHTX0 aht;               
 DFRobot_B_LUX_V30B myLux(19);     
-DHT dht(DHT11PIN, DHT11);         
+DHT dht(DHT11PIN, DHT11); 
 
 float temperatureDHT = 0;
 float humidityDHT = 0;
@@ -55,11 +59,20 @@ bool lastButton2State = LOW;
 bool BlindsUpReady = false;
 bool BlindsDownReady = false;
 
+//bool VentClosed = false;
+//bool VentOpen = false;
+
+bool PIRstate = false;
+bool LED = false;
+
+unsigned long lastPirTime = 0;
+const unsigned long PirTime = 10000;  // 10 seconds for test
+
 unsigned long previousThingSpeakTime = 0;
 const long thingSpeakInterval = 20000;    // Changed from default 20 second delay
 
 void handleRoot() {
-  String message = homePagePart1;
+  String message = webPage;
   server.send(200, "text/html", message);
 }
 
@@ -108,9 +121,13 @@ void setup(void) {
   // Initialize DHT11 Sensor
   dht.begin();
 
+  pinMode(PIRPIN, INPUT);
   pinMode(BUTTON_PIN1, INPUT);
   pinMode(BUTTON_PIN2, INPUT);
   pinMode(LEDPIN, OUTPUT);
+
+  //myServo.setPeriodHertz(50);
+  //myServo.attach(SERVOPIN);  
 
   // Initialize ThingSpeak
   ThingSpeak.begin(client);
@@ -124,6 +141,40 @@ void loop(void) {
 
   handleButton();
 
+//*************
+  PIRstate = digitalRead(PIRPIN);
+
+  if (PIRstate) {
+    lastPirTime = millis();
+    //Serial.println("Motion Detected");
+  }
+  if (millis() - lastPirTime < PirTime) {
+    digitalWrite(LEDPIN, HIGH);
+    LED = true;
+    //Serial.println("LED ON");
+  } else {
+    digitalWrite(LEDPIN, LOW);
+    LED = false;
+    //Serial.println("LED OFF"); 
+  }
+
+  /*
+  if (VentClosed == true) {
+    VentOpen = false;
+    for (int i = 0; i <= 180; i++) {
+      myServo.write(i);
+      delay(22);
+    }
+  }
+  if (VentOpen == true) {
+    VentClosed = false;
+    for (int i = 180; i >= 0; i--) {
+      myServo.write(i);
+      delay(22);
+    }
+  }
+  */
+
   if (BlindsUpReady == true) {
     BlindsDownReady = false;
     // Set the speed at 10 RPM
@@ -136,7 +187,6 @@ void loop(void) {
     myStepper.step(totalSteps);
     BlindsUpReady = false;
   }
-
   if (BlindsDownReady == true) {
     BlindsUpReady = false;
     // Set the speed at 10 RPM
@@ -215,7 +265,7 @@ void sendDataToThingSpeak() {
 
   //******************************************************************* REMOVE AND IMPLEMENT ACTUAL CODE*******************
   // Random value 0 or 1 generator for demo
-  int LED = esp_random() % 2;
+  //int LED = esp_random() % 2;
   Serial.print("LED Status: "); Serial.println(LED); 
   digitalWrite(LEDPIN, LED);
   
@@ -240,24 +290,40 @@ void sendDataToThingSpeak() {
 
   // Second ThingSpeak Channel
 
-  //******************************************************************* REMOVE AND IMPLEMENT ACTUAL CODE*******************
-  // Random value 0 or 1 generators for demo
+  int Vent = 0;
+  /*
+  // Removed code for the vent as servo motor is not working
   int Vent = esp_random() % 2;
   Serial.print("Vent Status: "); Serial.println(Vent);
-
-  int Motion = esp_random() % 2;
+  if (Vent == 0) {
+    VentClosed = true;
+  }
+  if (Vent == 1) {
+    VentOpen = true;
+  }
+  */
+  int Motion = LED ? 1 : 0;
   Serial.print("Motion Status: "); Serial.println(Motion);
 
-
-  int Blinds = esp_random() % 2;
-  
+  //int Blinds = esp_random() % 2;
+  int Blinds = 0;
+  if (button1ToggleState == 1) {
+    Blinds = 0;
+    BlindsDownReady = true;
+  }
+  if (button2ToggleState == 1) {
+    Blinds = 1;
+    BlindsUpReady = true;
+  }
   Serial.print("Blinds Status: "); Serial.println(Blinds);
+  /*
   if (Blinds == 0) {
     BlindsDownReady = true;
   }
   if (Blinds == 1) {
       BlindsUpReady = true;
   }
+  */
   
   ThingSpeak.setField(1, Vent);
   ThingSpeak.setField(2, Motion);

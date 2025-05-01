@@ -1,22 +1,44 @@
 #define pirPin 2
+#define ledPin 32
 
-int state = 0;
-int PIR = 0;
+bool PIRstate = false;
+
+unsigned long lastPirTime = 0;
+const unsigned long PirTime = 20000;
 
 void setup() {
-  pinMode(pirPin, INPUT);  
+  pinMode(pirPin, INPUT); 
+  pinMode(ledPin, OUTPUT); 
   Serial.begin(115200);      
 }
 
 void loop() {
-  state = digitalRead(pirPin);      
-  if (state == HIGH) {                
-    Serial.println("Movement Detected");  
-    PIR = 1;
+  bool PIRstate = digitalRead(pirPin);
+
+  if (PIRstate) {
+    lastPirTime = millis();
+    Serial.println("Motion Detected");
+  }
+
+  if (millis() - lastPirTime < PirTime) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("LED ON");
   } else {
-    Serial.println("Monitoring...");
-    PIR = 0;
+    digitalWrite(ledPin, LOW);
+    Serial.println("LED OFF"); 
   }
   delay(1000);
 }
+
+/*
+void loop() {
+  state = digitalRead(pirPin);      
+  if (state == true) {                
+    Serial.println("LED ON");  
+  } else {
+    Serial.println("LED OFF");
+  }
+  delay(1000);
+}
+*/
 
