@@ -7,7 +7,7 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Stepper.h>
-//#include <ESP32Servo.h>
+#include <ESP32Servo.h>
 #include <ThingSpeak.h>
 #include "homepage.h"
 #include "secrets.h"
@@ -263,9 +263,6 @@ void sendDataToThingSpeak() {
   float luxValue = myLux.lightStrengthLux(); 
   Serial.print("Lux value: "); Serial.println(luxValue); 
 
-  //******************************************************************* REMOVE AND IMPLEMENT ACTUAL CODE*******************
-  // Random value 0 or 1 generator for demo
-  //int LED = esp_random() % 2;
   Serial.print("LED Status: "); Serial.println(LED); 
   digitalWrite(LEDPIN, LED);
   

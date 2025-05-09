@@ -1,12 +1,12 @@
 #include <ESP32Servo.h>
 
-Servo myServo;  // Create a Servo object
+Servo myServo;  
 String input;
 
 void setup() {
   Serial.begin(115200);
-  myServo.setPeriodHertz(50);  // Standard servo frequency is 50 Hz
-  myServo.attach(33);          // 33
+  myServo.setPeriodHertz(50);  
+  myServo.attach(33);          
   Serial.println("ENTER A OR B");
 }
 
