@@ -36,18 +36,24 @@ My project is all about controlling everything that may be found in a bedroom.
 
 
   - For controlling the blinds for my project, I settled on using this inexpesive stepper motor and comes with a driver board that will interface with the ESP32 to control speed and direction of the motor.
-    - The Stepper Motor is a 28byj-48 model paired with a ULN2003 driver. The motor will then interface somehow into my blinds. I have looked into 3D-Printing a bracket and gears to drive the blinds directly where they hang from the wall.
-    - To Drive this motor, the esp32 sends patterns of signals on the IN1, IN2, IN3 and IN4 control pins on the ULN2003 driver. The driver needs to be powered from a external power supply as the USB power from a computer is not enough to drive the motor safely.
+    - The Stepper Motor is a 28BYJ-48 model paired with a ULN2003 driver. The motor will then interface somehow into my blinds. I have looked into 3D-Printing a bracket and gears to drive the blinds directly where they hang from the wall.
+    - To Drive this motor, the ESP32 sends patterns of signals on the IN1, IN2, IN3 and IN4 control pins on the ULN2003 driver.
+    - The driver needs to be powered from a external power supply as the USB power from a computer is not enough to drive the motor safely.
+  <img src="https://raw.githubusercontent.com/CircuitSculptor/IoT-Project/main/Project%20Photos/Stepper%20Motor+Driver.jpg" alt="Stepper Motor" width="200">
+  <img src="https://raw.githubusercontent.com/CircuitSculptor/IoT-Project/main/Project%20Photos/External%20Power%20Supply%20USB%20Connector.jpg" alt="USB Connector" width="300"> 
 
 
   - Using the 2 buttons I plan to have a physical way of moving the blinds up and down besides the webserver's digital buttons
     - Each button has a 10kΩ pull-up resistor. It is their to ensure that the ESP32 has a defined starting point for the state of the button.
-  (attach image here)
+  <img src="https://raw.githubusercontent.com/CircuitSculptor/IoT-Project/main/Project%20Photos/Buttons.jpg" alt="Buttons" width="200">
 
 
 ## I2C
-- The I²C protocol is fascinating as you only need power and 2 data wires to communicate with sensors and you can daisy-chain multiple sensors on the same bus as long as you dont use 2 identical      sensors, if a sensor has multiple i2c addresses then some changes to the code and the sensors will work with eachother.  
+- The I²C protocol is fascinating as you only need power and 2 data wires to communicate with up to 128 devices like sensors called slaves and the ESP32 which is a master. You can daisy-chain multiple sensors on the same bus as long as you dont use 2 identical      sensors, if a sensor has multiple I²C addresses then some changes to the code is required and then sensors will work with eachother.  
 - The data is sent using **SDA (Serial Data)** and **SCL (Serial Clock)**.
+- In my project, I have the AHT20 temperature and humidity sensor and a light sensor that the the I²C protocol. I have created a I²C bus using the power rail of my breadboard. So when the ATH20 or the light sensor gets connected, it can use this bus to minimaize the number of wires going from sensors to the ESP32.
+<img src="https://raw.githubusercontent.com/CircuitSculptor/IoT-Project/main/Project%20Photos/I2C%20bus.jpg" alt="I2C Bus" width="400">
+
 
 **More to come in the future**
 
