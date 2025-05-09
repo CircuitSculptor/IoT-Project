@@ -158,8 +158,6 @@ void sendDataToThingSpeak() {
   // Set the fields with the values
   ThingSpeak.setField(1, temperatureAHT);
   ThingSpeak.setField(2, humidityAHT);
-  //hingSpeak.setField(1, temp.temperature);
-  //ThingSpeak.setField(2, humidity.relative_humidity);
   ThingSpeak.setField(3, temperatureDHT);
   ThingSpeak.setField(4, humidityDHT);
   ThingSpeak.setField(5, luxValue);     
