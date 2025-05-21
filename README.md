@@ -16,7 +16,7 @@ My project is all about controlling everything that may be found in a bedroom.
 - 1x LED (with 330Ω resistor)
 
 ### Features
-- In my Smart Bedroom where will be **2 temperature and humidity sensors**, one will be placed inside the bedroom where it can measure the entire room effectively and one will be outside. To          protect the sensor from rain or direct sunlight, it is common practise to use a box with vent holes called a **Stevenson Screen**.
+- In my Smart Bedroom their are **2 temperature and humidity sensors**, one placed inside the bedroom where it can measure the entire room effectively and one will be outside. To          protect the sensor from rain or direct sunlight, it is common practice to use a box with vent holes called a **Stevenson Screen**.
   
   - My project features 2 types of sensors to gather temperature and humidity data.
       - One sensor is a AHT20 that uses the **I²C** protocol. More on I²C [here](#i2c)
